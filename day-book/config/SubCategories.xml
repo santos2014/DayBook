@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<types>
+  <type id="1" description="工资" main_categroy="1"></type>
+  <type id="2" description="出货" main_categroy="1"></type>
+  <type id="3" description="还款" main_categroy="1"></type>
+  <type id="4" description="进货" main_categroy="2"></type>
+  <type id="1" description="消费" main_categroy="2"></type>
+  <type id="1" description="借款" main_categroy="2"></type>
+</types>

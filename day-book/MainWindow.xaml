@@ -1,0 +1,106 @@
+﻿<Window x:Class="DayBook.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DayBook"
+        Title="MainWindow" Height="800" Width="1024">
+
+    <Window.Resources>
+        <local:CategeoryConverter x:Key="CategoryConverter"/>
+    </Window.Resources>
+
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Left">
+            <GroupBox Header="个人信息" Height="200" Width="200" >
+            </GroupBox>
+
+            <GroupBox Header="账单编辑" Height="200" VerticalAlignment="Top" Width="362">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="42" >
+                        <Label Content="选择账单项：" Height="25"  Width="100" HorizontalAlignment="Right"/>
+                        <ComboBox x:Name="CB_SubCategroy" Width="150" Height="25" HorizontalAlignment="Left"
+                                  Validation.Error="CB_SubCategroy_ValidationError"
+                        	ItemsSource="{Binding SubCategories}"
+                        	SelectedValuePath="ID" DisplayMemberPath="Description" ToolTip="select subcategory">
+
+                            <ComboBox.SelectedItem>
+                                <Binding Path="CurOrder.Category" Mode="TwoWay">
+                                    <Binding.ValidationRules>
+                                        <local:CategoryValidationRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedItem>
+
+                        </ComboBox>
+                        <TextBlock x:Name="TB_IncomeOrExpand" HorizontalAlignment="Right" Text="{Binding CurOrder.Category.MainCategroy, Converter={StaticResource CategoryConverter}}" Height="26" FontSize="18" FontWeight="Bold" FontStyle="Italic" VerticalAlignment="Center" Width="150" Margin="0,8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Height="25" Width="267" Margin="0,0,83,0" HorizontalAlignment="Right">
+                        <Label Content="金额：" Height="25" Width="100" />
+                        <TextBox x:Name="TB_howmuch" Validation.Error="TB_howmuch_ValidationError" AcceptsReturn="True" Width="151" Height="25">
+                            <Binding Path="CurOrder.HowMuch" Mode="TwoWay" NotifyOnValidationError="True">
+                                <Binding.ValidationRules>
+                                    <local:MoneyValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Height="50" Margin="0,0,83,0">
+                        <Label Content="备注：" Height="25" Width="100" />
+                        <TextBox x:Name="TB_description" Text="{Binding Path=CurOrder.Description, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" Width="249" Height="45" VerticalAlignment="Top"/>
+                    </StackPanel>
+                    <Button x:Name="Btn_add" Content="增加" Height="25" Click="Btn_add_Click"/>
+                    <TextBlock Name="TB_validate" Text="{Binding OrderValidation.Message}" Height="25" HorizontalAlignment="Center" Foreground="Red"></TextBlock>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+
+                <GroupBox Header="账单查询"  Width="200" Height="400"  DockPanel.Dock="Left" VerticalAlignment="Top">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="起始日期："></TextBlock>
+                            <DatePicker Width="120" SelectedDate="{Binding Path=DatePicker.Head}" ></DatePicker>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="截止日期："></TextBlock>
+                            <DatePicker Width="120" SelectedDate="{Binding Path=DatePicker.Tail}"></DatePicker>
+                        </StackPanel>
+
+
+                        <Button x:Name="Btn_search" Content="查询" HorizontalAlignment="Left" Width="188" Margin="0,0,0,348" Click="Btn_search_Click"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="账单明细"  Width="810" Height="400" VerticalAlignment="Top">
+                    <DataGrid Name="DG_detail" HorizontalAlignment="Left" Height="378" VerticalAlignment="Top" Width="798"/>
+                </GroupBox>
+
+            </StackPanel>
+            <GroupBox Header="提示"  Width="1000" Height="130" DockPanel.Dock="Left" VerticalAlignment="Top">
+                <ListBox ItemsSource="{Binding Path=Promptions}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <TextBlock Text="{Binding Path=Lvl}"  DockPanel.Dock="Left" Width="50">
+                                </TextBlock>
+                                <TextBlock Text="{Binding Path=Text}" Width="700">
+                                </TextBlock>
+                                <TextBlock Text="{Binding Path=Time}" DockPanel.Dock="Right" Width="150">
+                                </TextBlock>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+            <TextBlock Height="25" Text="Made by santos" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsEnabled="False" Opacity="0.3" FontSize="22" FontStyle="Italic" FontWeight="Bold" TextDecorations="{x:Null}" Foreground="#FF120815"></TextBlock>
+
+        </StackPanel>
+
+
+    </DockPanel>
+
+
+
+
+</Window>
